@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="src/plugins/L.Control.Sidebar.css">
         <link rel="stylesheet" href="dist/MarkerCluster.css">
         <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
-        
+        <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" /> <!-- Task 1 -->
         
         <script src="src/leaflet-src.js"></script>
         <script src="src/jquery-3.6.0.min.js"></script>
@@ -18,6 +18,7 @@
         <script src="src/plugins/L.Control.Sidebar.js"></script>
         <script src='swedish_counties.js'></script>
         <script src='countries.js'></script>
+        <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script> <!-- Task 1 -->
 
         
         
@@ -86,7 +87,7 @@
 				];
 
 				var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
-
+                L.control.polylineMeasure().addTo(mymap); //TASK 1
                
                                
                                       
