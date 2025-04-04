@@ -52,6 +52,7 @@
             <button id="l1">layer1</button>
             <button id="l2">layer2</button>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
+            <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
   
        </div>
        
@@ -146,6 +147,11 @@
                 
                 $("#btnFalun").click(function(){
                     mymap.setView([60.605866810126194, 15.628008842468262], 17);
+                })
+
+                /* Task 2 */
+                $("#btnStockholm").click(function(){
+                    mymap.setView([59.32502619101459,18.07071832838824], 11);
                 })
                 
                 
