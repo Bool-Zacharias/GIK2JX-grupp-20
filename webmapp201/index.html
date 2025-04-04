@@ -18,7 +18,7 @@
         <script src="src/plugins/L.Control.Sidebar.js"></script>
         <script src='swedish_counties.js'></script>
         <script src='countries.js'></script>
-        <script src="skepparholmen.js"></script>
+        <script src="skepparholmen.js"></script> <!-- Task 1 -->
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script> <!-- Task 1 -->
 
         
@@ -68,6 +68,7 @@
             var ctlSlidebar;
             var sample = L.geoJson(sample);
             var sample1 = L.geoJson(sample1);
+            var skepparholmen = L.geoJson(skepparholmen);
             
            
             $(document).ready(function(){
@@ -104,7 +105,7 @@
                 
                 popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src= 'img/museum.jpg'width='150px'>");
 
-                pops =L.marker([59.32502619101459,18.07071832838824],{icon:blackIcon}).addTo(mymap).bindPopup("Point to Stockholm");
+                pops =L.marker([59.32502619101459,18.07071832838824],{icon:blackIcon}).addTo(mymap).bindPopup("Point to Stockholm"); /* Task 1 */
                 
                                 
                 document.getElementById("l1").addEventListener("click", sweden);
