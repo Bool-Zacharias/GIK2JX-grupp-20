@@ -18,6 +18,7 @@
         <script src="src/plugins/L.Control.Sidebar.js"></script>
         <script src='swedish_counties.js'></script>
         <script src='countries.js'></script>
+        <script src="skepparholmen.js"></script>
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script> <!-- Task 1 -->
 
         
@@ -89,7 +90,7 @@
 				var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
                 L.control.polylineMeasure().addTo(mymap); //TASK 1
                
-                               
+                skepparholmen.addTo(mymap);//Task 1  
                                       
                 var blackIcon = L.icon({
                     iconUrl: 'map-marker.svg',
