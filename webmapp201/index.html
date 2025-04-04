@@ -101,7 +101,9 @@
                 // Popup and marker
                 popb = L.marker([60.48868922712431, 15.431371459960938],{icon: blackIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
                 
-                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src= 'img/museum.jpg'width='150px'>")
+                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src= 'img/museum.jpg'width='150px'>");
+
+                pops =L.marker([59.32502619101459,18.07071832838824],{icon:blackIcon}).addTo(mymap).bindPopup("Point to Stockholm");
                 
                                 
                 document.getElementById("l1").addEventListener("click", sweden);
