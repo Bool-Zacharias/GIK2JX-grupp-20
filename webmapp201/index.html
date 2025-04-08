@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="dist/MarkerCluster.css">
         <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
         <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" /> <!-- Task 1 -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/> <!-- Task 5 -->
         
         <script src="src/leaflet-src.js"></script>
         <script src="src/jquery-3.6.0.min.js"></script>
@@ -21,8 +21,9 @@
         <script src='countries.js'></script>
         <script src="skepparholmen.js"></script> <!-- Task 1 -->
         <script src='supermarket.js'></script>
+        <script src='fuel.js'></script> <!-- Task 1 -->
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script> <!-- Task 1 -->
-        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script> <!-- Task 5 -->
 
         <style>
             #mapdiv {
@@ -191,6 +192,7 @@
 
                  /* Task 3 */
                 // 1. Lägg till supermarket-punkter med popup
+
                 var supermarketLayer = L.geoJSON(supermarket, {
                 onEachFeature: function (feature, layer) {
                     if (feature.properties && feature.properties.name) {
@@ -280,12 +282,29 @@
                   /* TASK 4 Hovet imageOverlay */
                 var imageBounds = [[59.29524337663716, 18.08083650768264], [59.294591453048064, 18.08286425761146]];                
                 var imageOverlay = L.imageOverlay('img/djurgådenhockey.jpg', imageBounds).addTo(mymap);
+                /* Task 5 */
+                // 1. Skapa ett klusterlager
+                var fuelCluster = L.markerClusterGroup();
+                
+                // 2. Skapa GeoJSON-lager med vanliga L.marker
+                var fuelLayer = L.geoJSON(fuel, {
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
+                    }
+                },
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng); // <-- viktigt: använd L.marker, inte circleMarker
+                }
+                });
 
-                countrieslayer = L.geoJson(countries, {
-			    onEachFeature: function (feature, layer) {
-				layer.bindPopup(feature.properties.name);
-			     }
-		         });
+                // 3. Lägg till GeoJSON-lagret i klustret
+                fuelCluster.addLayer(fuelLayer);
+
+                // 4. Lägg till klusterlagret i kartan
+                mymap.addLayer(fuelCluster);
+
+
 
 
 		      document.getElementById("l2").addEventListener("click", c_layers);
