@@ -188,28 +188,28 @@
                 });
 
                  /* Task 3 */
-                 var supermarketLayer = L.geoJSON(supermarket, {
-                    onEachFeature: function (feature, layer) {
-                        if (feature.properties && feature.properties.name) {
-                        layer.bindPopup(`<b>${feature.properties.name}</b>`);
-                        }
-                    },
-                    pointToLayer: function (feature, latlng) {
-                        return L.circleMarker(latlng, {
-                        radius: 8,
-                        fillColor: "#2E86AB",
-                        color: "#000",
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                        });
+                // 1. Lägg till supermarket-punkter med popup
+                var supermarketLayer = L.geoJSON(supermarket, {
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
                     }
-                    }).addTo(mymap);
+                },
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: "#2E86AB",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                    });
+                }
+                }).addTo(mymap);
 
-                // Skapa buffertar (1 km runt varje punkt)
+                // 2. Skapa buffertar (1 km runt varje punkt)
                 const supermarketBuffer = turf.buffer(supermarket, 1, { units: 'kilometers' });
 
-                // Lägg till buffertarna på kartan
                 var bufferLayer = L.geoJSON(supermarketBuffer, {
                 style: {
                     color: "orange",
@@ -218,7 +218,7 @@
                 }
                 }).addTo(mymap);
 
-                // Lista att spara butiker som INTE överlappar med andra
+                // 3. Hitta icke överlappande supermarkets
                 var nonOverlapping = [];
 
                 supermarket.features.forEach(function (feature, index) {
@@ -241,35 +241,40 @@
                     nonOverlapping.push(feature);
                 }
                 });
-                // Skapa en geojson med de icke överlappande butikerna
-                L.geoJSON(nonOverlapping, {
-                    pointToLayer: function (feature, latlng) {
-                        return L.circleMarker(latlng, {
-                        radius: 10,
-                        fillColor: "red",
-                        color: "#900",
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.9
-                        }).bindPopup(`<b>Ej överlappande:</b> ${feature.properties.name}`);
-                    }
-                    }).addTo(mymap);
-                
-                document.getElementById("l1").addEventListener("click", sweden);
 
-		          function sweden(){
-                      if(mymap.hasLayer(swedishlayer)){
-                          mymap.removeLayer(swedishlayer);
-                         
-                          sidebar.hide();
-                          
-                      } else {
-                          swedishlayer.addTo(mymap);
-                          
-                          sidebar.show();
-                      }
-			
-		          };
+                // 4. Hitta överlappande genom att filtrera bort de icke överlappande
+                var overlapping = supermarket.features.filter(function (feature) {
+                return !nonOverlapping.includes(feature);
+                });
+
+                // 5. Visa icke överlappande i rött
+                L.geoJSON(nonOverlapping, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                    radius: 10,
+                    fillColor: "red",
+                    color: "#900",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.9
+                    }).bindPopup(`<b>Ej överlappande:</b> ${feature.properties.name}`);
+                }
+                }).addTo(mymap);
+
+                // 6. Visa överlappande i blått
+                L.geoJSON(overlapping, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: "#007bff",
+                    color: "#003f8a",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                    }).bindPopup(`<b>Överlappande butik:</b> ${feature.properties.name}`);
+                }
+                }).addTo(mymap);
+
                   /* TASK 4 Hovet imageOverlay */
                 var imageBounds = [[59.29524337663716, 18.08083650768264], [59.294591453048064, 18.08286425761146]];                
                 var imageOverlay = L.imageOverlay('img/djurgådenhockey.jpg', imageBounds).addTo(mymap);
