@@ -124,19 +124,19 @@
                 
                 function schoolDistance(){
                         let polylineMeasure = L.control.polylineMeasure ({position:'topleft', unit:'kilometres', showBearings:true,
-                        clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true})
+                        clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true});
                         polylineMeasure.addTo(mymap);
                     // Lines for polymeasure task 1
                     const line1coords = [
-                        {lat: 17.83675616886731, lng: 59.384911471411755}, // Neptun
-                        {lat: 18.06012909690233, lng: 59.366121405055026}, // SU
-                        {lat: 18.06914564190444, lng: 59.349072938891425}, // Försvars
-                        {lat: 17.93479121886577, lng: 59.21920478627072}, // Karolinska
-                        {lat: 17.849838410067036, lng: 59.398737842997406} // Björkes
+                    [59.384911471411755, 17.83675616886731], // Neptun
+                    [59.366121405055026, 18.06012909690233], // SU
+                    [59.349072938891425, 18.06914564190444], // Försvars
+                    [59.21920478627072, 17.93479121886577], // Karolinska
+                    [59.398737842997406, 17.849838410067036] // Björkes
                 ];
-            
                 polylineMeasure.seed([line1coords])
                 };
+
                 /* TASK 2 */
                 popNeptuniskolan.on('click', function() {
                     sidebar.show();
