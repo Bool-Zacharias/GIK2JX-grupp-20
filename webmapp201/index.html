@@ -19,6 +19,7 @@
         <script src='swedish_counties.js'></script>
         <script src='countries.js'></script>
         <script src="skepparholmen.js"></script> <!-- Task 1 -->
+        <script src='supermarket.js'></script>
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script> <!-- Task 1 -->
 
         
@@ -76,12 +77,82 @@
             var sample = L.geoJson(sample);
             var sample1 = L.geoJson(sample1);
             var skepparholmen = L.geoJson(skepparholmen);
-            
+
            
             $(document).ready(function(){
                 mymap = L.map('mapdiv', {center:[60.48868922712431, 15.421371459960938], zoom:13});
+                /* Task 3 */
+                var supermarketLayer = L.geoJSON(supermarket, {
+                    onEachFeature: function (feature, layer) {
+                        if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(`<b>${feature.properties.name}</b>`);
+                        }
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                        radius: 8,
+                        fillColor: "#2E86AB",
+                        color: "#000",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                        });
+                    }
+                    }).addTo(mymap);
+
                 lyrOSM= L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
                 mymap.addLayer(lyrOSM);
+                // Skapa buffertar (1 km runt varje punkt)
+                const supermarketBuffer = turf.buffer(supermarket, 1, { units: 'kilometers' });
+
+                // Lägg till buffertarna på kartan
+                var bufferLayer = L.geoJSON(supermarketBuffer, {
+                style: {
+                    color: "orange",
+                    fillOpacity: 0.2,
+                    dashArray: "5,5"
+                }
+                }).addTo(mymap);
+
+                // Lista att spara butiker som INTE överlappar med andra
+                var nonOverlapping = [];
+
+                supermarket.features.forEach(function (feature, index) {
+                const thisBuffer = turf.buffer(feature, 1, { units: 'kilometers' });
+                let isOverlapping = false;
+
+                supermarket.features.forEach(function (other, i) {
+                    if (i !== index) {
+                    const otherBuffer = turf.buffer(other, 1, { units: 'kilometers' });
+                    if (
+                        turf.booleanOverlap(thisBuffer, otherBuffer) ||
+                        turf.booleanContains(thisBuffer, otherBuffer)
+                    ) {
+                        isOverlapping = true;
+                    }
+                    }
+                });
+
+                if (!isOverlapping) {
+                    nonOverlapping.push(feature);
+                }
+                });
+                // Skapa en geojson med de icke överlappande butikerna
+                L.geoJSON(nonOverlapping, {
+                    pointToLayer: function (feature, latlng) {
+                        return L.circleMarker(latlng, {
+                        radius: 10,
+                        fillColor: "red",
+                        color: "#900",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.9
+                        }).bindPopup(`<b>Ej överlappande:</b> ${feature.properties.name}`);
+                    }
+                    }).addTo(mymap);
+
+
+
                 
                 
                 ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
@@ -123,7 +194,8 @@
                 popKarolinskaUniversitetet = L.marker([59.21920478627072, 17.93479121886577],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Karolinska Universitetet</h3><img src= 'img/Karolinska universitetet.jpg'width='150px'>"); /* Task 2 */
                 
                 popBjörkebyskolan = L.marker([59.398737842997406,17.849838410067036],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Björkebyskolan</h3><img src= 'img/björkebyskolan.jpg'width='150px'>"); /* Task 2 */
-                
+
+                /* TASK 2 */
                 popNeptuniskolan.on('click', function() {
                     sidebar.show();
                     $("#school-info").html(`
