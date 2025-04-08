@@ -49,14 +49,20 @@
        <div id="mapdiv" class="col-md-9"></div>
        
        <div id="side-bar" class="col-md-3"><h2>My Map</h2>
-            <button id="l1">layer1</button>
+            <button id="l1">Skolinfo</button>
             <button id="l2">layer2</button>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
   
        </div>
        
-       <div id="sidebar"><h1>leaflet-sidebar</h1>
+       <div id="sidebar">
+        <h1>Skolinfo</h1>
+        <div id="school-info">
+          <p>Klicka på en skola för att se information här.</p>
+        </div>
+      </div>
+      
        </div>
         
        <script>
@@ -117,7 +123,59 @@
                 popKarolinskaUniversitetet = L.marker([59.21920478627072, 17.93479121886577],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Karolinska Universitetet</h3><img src= 'img/Karolinska universitetet.jpg'width='150px'>"); /* Task 2 */
                 
                 popBjörkebyskolan = L.marker([59.398737842997406,17.849838410067036],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Björkebyskolan</h3><img src= 'img/björkebyskolan.jpg'width='150px'>"); /* Task 2 */
+                
+                popNeptuniskolan.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Neptuniskolan</h3>
+                        <p>Antal elever: 350</p>
+                        <p>Adress: Neptunigatan 12, Järfälla</p>
+                        <img src='img/neptuniskolan.jpg' width='200px'>
+                    `);
+                });
 
+                popStockholmUniversitet.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Stockholms Universitet</h3>
+                        <p>Antal studenter: 30 000+</p>
+                        <p>Adress: Universitetsvägen 10A, Stockholm</p>
+                        <img src='img/universitet.jpg' width='200px'>
+                    `);
+                });
+
+                popForsvarsHogskolan.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Försvarshögskolan</h3>
+                        <p>Fokus: Försvar, säkerhet & krisberedskap</p>
+                        <p>Adress: Drottning Kristinas väg 37, Stockholm</p>
+                        <img src='img/Försvarshögskolan.png' width='200px'>
+                    `);
+                });
+
+                popKarolinskaUniversitetet.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Karolinska Institutet</h3>
+                        <p>Antal studenter: 6 000+</p>
+                        <p>Adress: Nobels väg 6, Solna</p>
+                        <img src='img/Karolinska universitetet.jpg' width='200px'>
+                    `);
+                });
+
+                popBjörkebyskolan.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Björkebyskolan</h3>
+                        <p>Antal elever: 450</p>
+                        <p>Adress: Björkebyvägen 10, Järfälla</p>
+                        <img src='img/björkebyskolan.jpg' width='200px'>
+                    `);
+                });
+
+                
+                
                 document.getElementById("l1").addEventListener("click", sweden);
 
 		          function sweden(){
@@ -167,13 +225,13 @@
                 
                 // Buffer
                             
-  /*              sample1.addTo(mymap);
+                sample1.addTo(mymap);
                 var s2 = sample1.toGeoJSON();
                 
                 var samplegeo = turf.buffer(s2, 0.5,{units: 'kilometers' });
 
                 var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
-    */               
+                 
                     
   
             });
