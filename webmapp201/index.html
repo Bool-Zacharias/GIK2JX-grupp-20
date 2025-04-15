@@ -196,7 +196,7 @@
                 var supermarketLayer = L.geoJSON(supermarket, {
                 onEachFeature: function (feature, layer) {
                     if (feature.properties && feature.properties.name) {
-                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
+                    layer.bindPopup(`<b>${feature.properties.name}</b>`); // Skapar popup med namn
                     }
                 },
                 pointToLayer: function (feature, latlng) {
@@ -226,9 +226,11 @@
                 var nonOverlapping = [];
 
                 supermarket.features.forEach(function (feature, index) {
-                const thisBuffer = turf.buffer(feature, 1, { units: 'kilometers' });
+                const thisBuffer = turf.buffer(feature, 1, { units: 'kilometers' }); // Aktuell butik
+                
                 let isOverlapping = false;
 
+                // Andra butikers buffers och om de överlappar eller om den ena innehåller den andra
                 supermarket.features.forEach(function (other, i) {
                     if (i !== index) {
                     const otherBuffer = turf.buffer(other, 1, { units: 'kilometers' });
@@ -282,6 +284,7 @@
                   /* TASK 4 Hovet imageOverlay */
                 var imageBounds = [[59.29524337663716, 18.08083650768264], [59.294591453048064, 18.08286425761146]];                
                 var imageOverlay = L.imageOverlay('img/djurgådenhockey.jpg', imageBounds).addTo(mymap);
+                
                 /* Task 5 */
                 // 1. Skapa ett klusterlager
                 var fuelCluster = L.markerClusterGroup();
