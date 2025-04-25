@@ -54,7 +54,15 @@
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
             <button id='btnHovet' class="btn btn-primary btn-block">ZoomToHovet</button>
-  
+            <hr>
+            <h3>Väder</h3>
+            <button id="btnGbgWeather" class="btn btn-info btn-block">Gå till väder Göteborg</button>
+            <button id="btnBastadWeather" class="btn btn-info btn-block">Gå till väder Båstad</button> <!-- ändrat från Malmö till Kiruna -->
+            <button id="btnUppsalaWeather" class="btn btn-info btn-block">Gå till väder Uppsala</button>
+            <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button> <!-- ändrat från Lund till Ljungby -->
+            <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
+
+
        </div>
        
        <div id="sidebar">
@@ -347,7 +355,73 @@
 
                 var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
                  
-                    
+                // === Task 6: Väder från SMHI ===
+                const url = 'https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/{stationId}/period/latest-hour/data.json';
+                const weatherStations = {
+                    "Göteborg": {
+                        id: 98230,
+                        coords: [57.7089, 11.9746]
+                    },
+                    "Falun": {
+                        id: 97100,
+                        coords: [60.6072, 15.6310] // ✅ rätt koordinat från SMHI
+                    },
+                    "Uppsala": {
+                        id: 97510,
+                        coords: [59.8586, 17.6389]
+                    },
+                    "Båstad": {
+                        id: 62600,
+                        coords: [12.7974, 56.4500] // ✅ rätt koordinat från SMHI
+                    },
+                    "Västerås": {
+                        id: 97400,
+                        coords: [59.6099, 16.5448]
+                    }
+                };
+
+
+                let weatherMarker; // för att ta bort gamla markörer
+                function goToWeather(cityName) {
+                const station = weatherStations[cityName];
+
+                const smhiUrl = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/${station.id}/period/latest-hour/data.json`;
+
+                fetch(smhiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const temp = data.value[0].value;
+                        const time = new Date(data.value[0].date).toLocaleString();
+                        
+                        if (weatherMarker) {
+                            mymap.removeLayer(weatherMarker);
+                        }
+
+                        weatherMarker = L.marker(station.coords)
+                            .addTo(mymap)
+                            .bindPopup(`
+                                <h4>${cityName}</h4>
+                                <p><strong>${temp}°C</strong></p>
+                                <p><small>${time}</small></p>
+                            `)
+                            .openPopup();
+
+                        mymap.flyTo(station.coords, 12); // Zooma in på staden
+                    })
+                    .catch(error => {
+                        console.error("Fel vid hämtning av väderdata:", error);
+                    });
+            }
+            $("#btnGbgWeather").click(() => { goToWeather("Göteborg"); });
+            $("#btnBastadWeather").click(() => { goToWeather("Båstad"); }); // ändrat till btnKirunaWeather
+            $("#btnUppsalaWeather").click(() => { goToWeather("Uppsala"); });
+            $("#btnFalunWeather").click(() => { goToWeather("Falun"); }); // ändrat till btnLjungbyWeather
+            $("#btnVasterasWeather").click(() => { goToWeather("Västerås"); });
+
+
+
+
+
   
             });
             
