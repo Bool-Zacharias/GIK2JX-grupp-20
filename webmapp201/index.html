@@ -57,7 +57,7 @@
             <hr>
             <h3>Väder</h3>
             <button id="btnGbgWeather" class="btn btn-info btn-block">Gå till väder Göteborg</button>
-            <button id="btnBastadWeather" class="btn btn-info btn-block">Gå till väder Båstad</button> <!-- ändrat från Malmö till Kiruna -->
+            <button id="btnSthlmWeather" class="btn btn-info btn-block">Gå till väder Stockholm Arlanda</button> <!-- ändrat från Malmö till Kiruna -->
             <button id="btnUppsalaWeather" class="btn btn-info btn-block">Gå till väder Uppsala</button>
             <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button> <!-- ändrat från Lund till Ljungby -->
             <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
@@ -370,9 +370,9 @@
                         id: 97510,
                         coords: [59.8586, 17.6389]
                     },
-                    "Båstad": {
-                        id: 62600,
-                        coords: [12.7974, 56.4500] // ✅ rätt koordinat från SMHI
+                    "Stockholm": {
+                        id: 97400,
+                        coords: [59.6269, 17.9545] // ✅ rätt koordinat från SMHI
                     },
                     "Västerås": {
                         id: 97400,
@@ -413,7 +413,7 @@
                     });
             }
             $("#btnGbgWeather").click(() => { goToWeather("Göteborg"); });
-            $("#btnBastadWeather").click(() => { goToWeather("Båstad"); }); // ändrat till btnKirunaWeather
+            $("#btnSthlmWeather").click(() => { goToWeather("Stockholm"); }); // ändrat till btnKirunaWeather
             $("#btnUppsalaWeather").click(() => { goToWeather("Uppsala"); });
             $("#btnFalunWeather").click(() => { goToWeather("Falun"); }); // ändrat till btnLjungbyWeather
             $("#btnVasterasWeather").click(() => { goToWeather("Västerås"); });
