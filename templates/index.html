@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Webmapp 201</title>
+        <link rel="stylesheet" href="src/leaflet.css">
+        <link rel="stylesheet" href="src/css/bootstrap.css">
+        <link rel="stylesheet" href="src/plugins/L.Control.Zoomslider.css">
+        <link rel="stylesheet" href="src/plugins/L.Control.Sidebar.css">
+        <link rel="stylesheet" href="dist/MarkerCluster.css">
+        <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" /> <!-- Task 1 -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"/> <!-- Task 5 -->
+        
+        <script src="src/leaflet-src.js"></script>
+        <script src="src/jquery-3.6.0.min.js"></script>
+        <script src="src/turf.min.js" charset="utf-8"></script>
+        <script src="src/plugins/L.Control.Zoomslider.js"></script>
+        <script src="src/plugins/L.Control.Sidebar.js"></script>
+        <script src='swedish_counties.js'></script>
+        <script src='countries.js'></script>
+        <script src="skepparholmen.js"></script> <!-- Task 1 -->
+        <script src='supermarket.js'></script>
+        <script src='fuel.js'></script> <!-- Task 1 -->
+        <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script> <!-- Task 1 -->
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script> <!-- Task 5 -->
+        
+        <style>
+            #mapdiv {
+                height: 100vh;
+            }  
+            
+            #side-bar {
+			position: absolute;
+			z-index: 1000;
+			background: rgba(255,255,255,0.7);
+			padding: 10px;
+			right: 0;
+            top: 0;
+			margin: 10px;
+			border-radius: 10px;
+			min-height: 200px;
+            }
+                        
+        </style>
+    </head>
+    <body>
+       <div id="mapdiv" class="col-md-9"></div>
+       
+       <div id="side-bar" class="col-md-3"><h2>My Map</h2>
+            <button id="l1">Skolinfo</button>
+            <button id="l2">layer2</button>
+            <button id="l3">Distans skolor</button>
+            <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
+            <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
+            <button id='btnHovet' class="btn btn-primary btn-block">ZoomToHovet</button>
+            <hr>
+            <h3>Väder</h3>
+            <button id="btnGbgWeather" class="btn btn-info btn-block">Gå till väder Göteborg</button>
+            <button id="btnSthlmWeather" class="btn btn-info btn-block">Gå till väder Stockholm Arlanda</button> <!-- ändrat från Malmö till Kiruna -->
+            <button id="btnUppsalaWeather" class="btn btn-info btn-block">Gå till väder Uppsala</button>
+            <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button> <!-- ändrat från Lund till Ljungby -->
+            <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
+            <button id="btnTask7" class="btn btn-info btn-block">Zoom to task 7</button>
+
+       </div>
+       
+       <div id="sidebar">
+        <h1>Skolinfo</h1>
+        <div id="school-info">
+          <p>Klicka på en skola för att se information här.</p>
+        </div>
+      </div>
+      
+       </div>
+        
+       <script>
+            var mymap; 
+            var lyrOSM; 
+            var mrkCurrentLocation;
+            var ctlZoomslider;
+            var swedishlayer = L.geoJson(swedish_counties);
+            var countrieslayer
+            var ctlSlidebar;
+            var sample = L.geoJson(sample);
+            var sample1 = L.geoJson(sample1);
+            var skepparholmen = L.geoJson(skepparholmen);
+
+           
+            $(document).ready(function(){
+                mymap = L.map('mapdiv', {center:[60.48868922712431, 15.421371459960938], zoom:13});
+
+                lyrOSM= L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                mymap.addLayer(lyrOSM);
+                ctlZoomslider = L.control.zoomslider({position:'topright'}).addTo(mymap);
+                
+                var sidebar = L.control.sidebar('sidebar', {position: 'left'});
+                mymap.addControl(sidebar);
+                
+                var latlngs = [
+					[60.482370725338484, 15.434717248972277],
+					[60.484316080102275, 15.441777259162706],
+					[60.486972387134756, 15.438435413671698]
+				];
+
+				var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+                L.control.polylineMeasure().addTo(mymap); //TASK 1
+               
+                skepparholmen.addTo(mymap);//Task 1  
+                                      
+                var blackIcon = L.icon({
+                    iconUrl: 'map-marker.svg',
+                    iconSize:     [32, 37], // size of the icon
+                    iconAnchor:   [32, 37], // point of the icon which will correspond to marker's location
+                    popupAnchor:  [0, -30] // point from which the popup should open relative to the iconAnchor
+                });
+                
+                // Popup and marker
+                popb = L.marker([60.48868922712431, 15.431371459960938],{icon: blackIcon}).addTo(mymap).bindPopup('Intro to Leaflet');
+                
+                popf= L.marker([60.605898734439805,15.628023594617845], {icon:blackIcon}).addTo(mymap).bindPopup("<h3>Falun Museum</h3><img src= 'img/museum.jpg'width='150px'>");
+
+                pops =L.marker([59.32502619101459,18.07071832838824],{icon:blackIcon}).addTo(mymap).bindPopup("Point to Stockholm"); /* Task 1 */
+                
+                popNeptuniskolan = L.marker([59.384911471411755, 17.83675616886731],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Neptuniskolan</h3><img src= 'img/neptuniskolan.jpg'width='150px'>"); /* Task 2 */
+                
+                popStockholmUniversitet = L.marker([59.366121405055026, 18.06012909690233],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Stockholm Universitet</h3><img src= 'img/universitet.jpg'width='150px'>"); /* Task 2 */
+
+                popForsvarsHogskolan = L.marker([59.349072938891425, 18.06914564190444],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Försvars Högskolan</h3><img src= 'img/Försvarshögskolan.png'width='150px'>"); /* Task 2 */
+                
+                popKarolinskaUniversitetet = L.marker([59.21920478627072, 17.93479121886577],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Karolinska Universitetet</h3><img src= 'img/Karolinska universitetet.jpg'width='150px'>"); /* Task 2 */
+                
+                popBjörkebyskolan = L.marker([59.398737842997406,17.849838410067036],{icon:blackIcon}).addTo(mymap).bindPopup("<h3>Björkebyskolan</h3><img src= 'img/björkebyskolan.jpg'width='150px'>"); /* Task 2 */
+                
+                function schoolDistance(){
+                        let polylineMeasure = L.control.polylineMeasure ({position:'topleft', unit:'kilometres', showBearings:true,
+                        clearMeasurementsOnStop: false, showClearControl: true, showUnitControl: true});
+                        polylineMeasure.addTo(mymap);
+                    // Lines for polymeasure task 1
+                    const line1coords = [
+                    [59.384911471411755, 17.83675616886731], // Neptun
+                    [59.366121405055026, 18.06012909690233], // SU
+                    [59.349072938891425, 18.06914564190444], // Försvars
+                    [59.21920478627072, 17.93479121886577], // Karolinska
+                    [59.398737842997406, 17.849838410067036] // Björkes
+                ];
+                polylineMeasure.seed([line1coords])
+                };
+
+                /* TASK 2 */
+                popNeptuniskolan.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Neptuniskolan</h3>
+                        <p>Antal elever: 350</p>
+                        <p>Adress: Neptunigatan 12, Järfälla</p>
+                        <img src='img/neptuniskolan.jpg' width='200px'>
+                    `);
+                });
+
+                popStockholmUniversitet.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Stockholms Universitet</h3>
+                        <p>Antal studenter: 30 000+</p>
+                        <p>Adress: Universitetsvägen 10A, Stockholm</p>
+                        <img src='img/universitet.jpg' width='200px'>
+                    `);
+                });
+
+                popForsvarsHogskolan.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Försvarshögskolan</h3>
+                        <p>Fokus: Försvar, säkerhet & krisberedskap</p>
+                        <p>Adress: Drottning Kristinas väg 37, Stockholm</p>
+                        <img src='img/Försvarshögskolan.png' width='200px'>
+                    `);
+                });
+
+                popKarolinskaUniversitetet.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Karolinska Institutet</h3>
+                        <p>Antal studenter: 6 000+</p>
+                        <p>Adress: Nobels väg 6, Solna</p>
+                        <img src='img/Karolinska universitetet.jpg' width='200px'>
+                    `);
+                });
+
+                popBjörkebyskolan.on('click', function() {
+                    sidebar.show();
+                    $("#school-info").html(`
+                        <h3>Björkebyskolan</h3>
+                        <p>Antal elever: 450</p>
+                        <p>Adress: Björkebyvägen 10, Järfälla</p>
+                        <img src='img/björkebyskolan.jpg' width='200px'>
+                    `);
+                });
+
+                 /* Task 3 */
+                // 1. Lägg till supermarket-punkter med popup
+
+                var supermarketLayer = L.geoJSON(supermarket, {
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                    layer.bindPopup(`<b>${feature.properties.name}</b>`); // Skapar popup med namn
+                    }
+                },
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: "#2E86AB",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                    });
+                }
+                }).addTo(mymap);
+
+                // 2. Skapa buffertar (1 km runt varje punkt)
+                const supermarketBuffer = turf.buffer(supermarket, 1, { units: 'kilometers' });
+
+                var bufferLayer = L.geoJSON(supermarketBuffer, {
+                style: {
+                    color: "orange",
+                    fillOpacity: 0.2,
+                    dashArray: "5,5"
+                }
+                }).addTo(mymap);
+
+                // 3. Hitta icke överlappande supermarkets
+                var nonOverlapping = [];
+
+                supermarket.features.forEach(function (feature, index) {
+                const thisBuffer = turf.buffer(feature, 1, { units: 'kilometers' }); // Aktuell butik
+                
+                let isOverlapping = false;
+
+                // Andra butikers buffers och om de överlappar eller om den ena innehåller den andra
+                supermarket.features.forEach(function (other, i) {
+                    if (i !== index) {
+                    const otherBuffer = turf.buffer(other, 1, { units: 'kilometers' });
+                    if (
+                        turf.booleanOverlap(thisBuffer, otherBuffer) ||
+                        turf.booleanContains(thisBuffer, otherBuffer)
+                    ) {
+                        isOverlapping = true;
+                    }
+                    }
+                });
+
+                if (!isOverlapping) {
+                    nonOverlapping.push(feature);
+                }
+                });
+
+                // 4. Hitta överlappande genom att filtrera bort de icke överlappande
+                var overlapping = supermarket.features.filter(function (feature) {
+                return !nonOverlapping.includes(feature);
+                });
+
+                // 5. Visa icke överlappande i rött
+                L.geoJSON(nonOverlapping, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                    radius: 10,
+                    fillColor: "red",
+                    color: "#900",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.9
+                    }).bindPopup(`<b>Ej överlappande:</b> ${feature.properties.name}`);
+                }
+                }).addTo(mymap);
+
+                // 6. Visa överlappande i blått
+                L.geoJSON(overlapping, {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: "#007bff",
+                    color: "#003f8a",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                    }).bindPopup(`<b>Överlappande butik:</b> ${feature.properties.name}`);
+                }
+                }).addTo(mymap);
+
+                  /* TASK 4 Hovet imageOverlay */
+                var imageBounds = [[59.29524337663716, 18.08083650768264], [59.294591453048064, 18.08286425761146]];                
+                var imageOverlay = L.imageOverlay('img/djurgådenhockey.jpg', imageBounds).addTo(mymap);
+                
+                /* Task 5 */
+                // 1. Skapa ett klusterlager
+                var fuelCluster = L.markerClusterGroup();
+                
+                // 2. Skapa GeoJSON-lager med vanliga L.marker
+                var fuelLayer = L.geoJSON(fuel, {
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                    layer.bindPopup(`<b>${feature.properties.name}</b>`);
+                    }
+                },
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng); // <-- viktigt: använd L.marker, inte circleMarker
+                }
+                });
+
+                // 3. Lägg till GeoJSON-lagret i klustret
+                fuelCluster.addLayer(fuelLayer);
+
+                // 4. Lägg till klusterlagret i kartan
+                mymap.addLayer(fuelCluster);
+
+
+
+
+		      document.getElementById("l2").addEventListener("click", c_layers);
+                
+                function c_layers(){
+                    if(mymap.hasLayer(countrieslayer)){
+                        mymap.removeLayer(countrieslayer);
+                    } 
+                    else {
+                        countrieslayer.addTo(mymap);
+                        }
+                    };
+
+                // School Distance
+                document.getElementById("l3").addEventListener('click', schoolDistance);
+                
+                $("#btnFalun").click(function(){
+                    mymap.setView([60.605866810126194, 15.628008842468262], 17);
+                })
+
+                /* Task 2 */
+                $("#btnStockholm").click(function(){
+                    mymap.setView([59.32502619101459,18.07071832838824], 11);
+                })
+                $("#btnHovet").click(function(){
+                    mymap.setView([59.29509272313594, 18.08190939127913], 17);
+                })
+                
+                
+                
+                // Buffer
+                            
+                sample1.addTo(mymap);
+                var s2 = sample1.toGeoJSON();
+                
+                var samplegeo = turf.buffer(s2, 0.5,{units: 'kilometers' });
+
+                var samplegeol = L.geoJSON(samplegeo, {style:{color:'yellow', dashArray:'5,5', fillOpacity:0.1}}).addTo(mymap);
+                 
+                // === Task 6: Väder från SMHI ===
+                const url = 'https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/{stationId}/period/latest-hour/data.json';
+                const weatherStations = {
+                    "Göteborg": {
+                        id: 98230,
+                        coords: [57.7089, 11.9746]
+                    },
+                    "Falun": {
+                        id: 97100,
+                        coords: [60.6072, 15.6310] // ✅ rätt koordinat från SMHI
+                    },
+                    "Uppsala": {
+                        id: 97510,
+                        coords: [59.8586, 17.6389]
+                    },
+                    "Stockholm": {
+                        id: 97400,
+                        coords: [59.6269, 17.9545] // ✅ rätt koordinat från SMHI
+                    },
+                    "Västerås": {
+                        id: 97400,
+                        coords: [59.6099, 16.5448]
+                    }
+                };
+
+
+                let weatherMarker; // för att ta bort gamla markörer
+                function goToWeather(cityName) {
+                const station = weatherStations[cityName];
+
+                const smhiUrl = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/${station.id}/period/latest-hour/data.json`;
+
+                fetch(smhiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        const temp = data.value[0].value;
+                        const time = new Date(data.value[0].date).toLocaleString();
+                        
+                        if (weatherMarker) {
+                            mymap.removeLayer(weatherMarker);
+                        }
+
+                        weatherMarker = L.marker(station.coords)
+                            .addTo(mymap)
+                            .bindPopup(`
+                                <h4>${cityName}</h4>
+                                <p><strong>${temp}°C</strong></p>
+                                <p><small>${time}</small></p>
+                            `)
+                            .openPopup();
+
+                        mymap.flyTo(station.coords, 12); // Zooma in på staden
+                    })
+                    .catch(error => {
+                        console.error("Fel vid hämtning av väderdata:", error);
+                    });
+            }
+            $("#btnGbgWeather").click(() => { goToWeather("Göteborg"); });
+            $("#btnSthlmWeather").click(() => { goToWeather("Stockholm"); }); // ändrat till btnKirunaWeather
+            $("#btnUppsalaWeather").click(() => { goToWeather("Uppsala"); });
+            $("#btnFalunWeather").click(() => { goToWeather("Falun"); }); // ändrat till btnLjungbyWeather
+            $("#btnVasterasWeather").click(() => { goToWeather("Västerås"); });
+
+
+
+
+
+  
+            });
+            
+
+            
+       </script>
+       <script src="/static/tasks/task7.js"></script>
+    </body>
+</html>
