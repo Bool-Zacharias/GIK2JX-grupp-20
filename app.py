@@ -1,25 +1,31 @@
-from flask import Flask, render_template, jsonify
+import os
 import pandas as pd
+from flask import Flask, jsonify
 from sklearn.cluster import KMeans
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route("/api/clusters")
-def get_clusters():
-    df = pd.read_csv("/data/school_locations.csv")
+def api_clusters():
+    try:
+        # ✅ Rätt sökväg
+        csv_path = os.path.join("static", "data", "school_locations.csv")
+        
+        # Läs CSV
+        df = pd.read_csv(csv_path)
 
+        # Kontroll att kolumnerna finns
+        if not all(col in df.columns for col in ["lat", "lon"]):
+            return jsonify({"error": "CSV saknar kolumnerna 'lat' och 'lon'"}), 400
 
-    df = df.rename(columns={"ycoord": "lat", "xcoord": "lon"})
+        # K-means clustering
+        kmeans = KMeans(n_clusters=5, random_state=0)
+        df['cluster'] = kmeans.fit_predict(df[['lat', 'lon']])
 
-    coords = df[["lat", "lon"]]
-    kmeans = KMeans(n_clusters=3, random_state=42).fit(coords)
-    df["cluster"] = kmeans.labels_
-
-    return jsonify(df.to_dict(orient="records"))
-
-if __name__ == '__main__':
-    app.run(debug=True, host="127.0.0.1", port=5000)
+        # Gör till JSON
+        data = df[['Name', 'lat', 'lon', 'cluster']].to_dict(orient="records")
+        return jsonify(data)
+    
+    except Exception as e:
+        print("🚨 FEL I /api/clusters:", e)
+        return jsonify({"error": "Serverfel"}), 500
