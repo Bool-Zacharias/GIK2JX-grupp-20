@@ -1,4 +1,5 @@
   function loadSchoolLines() {
+    
     const schoolCoords = [
       [59.384911471411755, 17.83675616886731], // Neptun
       [59.366121405055026, 18.06012909690233], // SU
@@ -30,6 +31,7 @@
   
   document.getElementById("l3").addEventListener('click', function() {
     loadSchoolLines();
+    clearMap();
   });
   
   

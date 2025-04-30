@@ -1,4 +1,6 @@
+
 function task7Kluster() {
+  clearMap();
   const colors = ["red", "blue", "yellow", "orange", "purple"];
 
   fetch("/api/clusters")

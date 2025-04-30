@@ -48,7 +48,7 @@
        <div id="side-bar" class="col-md-3"><h2>My Map</h2>
             <button id="l1">Skolinfo</button>
             <button id="l2">layer2</button>
-            <button id="l3">Distans skolor</button>
+            <button id="l3">Task 2 Distans Skolor i Stockholm</button>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
             <button id='btnHovet' class="btn btn-primary btn-block">ZoomToHovet</button>
@@ -79,8 +79,15 @@
         var sample = L.geoJson(sample);
         var sample1 = L.geoJson(sample1);
         var skepparholmen = L.geoJson(skepparholmen);
-        
+        function clearMap() {
+            mymap.eachLayer(function (layer) {
+                if (layer !== lyrOSM) {
+                mymap.removeLayer(layer);
+                }
+            });
+            }
         $(document).ready(function() {
+            
             mymap = L.map('mapdiv', {center: [60.48868922712431, 15.421371459960938], zoom: 13});
         
             lyrOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
