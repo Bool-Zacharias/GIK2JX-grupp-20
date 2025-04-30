@@ -26,6 +26,7 @@
         <script src="/static/js/fuel.js"></script>
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
         <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    
       
         <style>
           #mapdiv {
@@ -297,12 +298,10 @@
                 }
             });
             
-            function schoolDistance() {
-                alert("schoolDistance clicked!");
-                }
+            document.getElementById("l3").addEventListener('click', function() {
+                loadSchoolLines();
+             });
 
-            document.getElementById("l3").addEventListener('click', schoolDistance);
-        
             $("#btnFalun").click(() => { mymap.flyTo([60.605866810126194, 15.628008842468262], 17); });
             $("#btnStockholm").click(() => { mymap.flyTo([59.32502619101459, 18.07071832838824], 11); });
             $("#btnHovet").click(() => { mymap.flyTo([59.29509272313594, 18.08190939127913], 17); });
@@ -320,7 +319,7 @@
             }).addTo(mymap);
         });
         </script>
-        
+        <script src="/static/js/task2.js"></script>
        <script src="/static/js/task7.js"></script>
     </body>
 </html>
