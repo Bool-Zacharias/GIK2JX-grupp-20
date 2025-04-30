@@ -4,7 +4,6 @@
         <meta charset="UTF-8" />
         <title>Webmapp 201</title>
       
-        <!-- CSS -->
         <link rel="stylesheet" href="/static/css/bootstrap.css">
         <link rel="stylesheet" href="/static/css/leaflet.css">
         <link rel="stylesheet" href="/static/plugins/L.Control.Zoomslider.css">
@@ -13,7 +12,6 @@
         <link rel="stylesheet" href="/static/dist/MarkerCluster.Default.css">
         <link rel="stylesheet" href="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.css" />
       
-        <!-- JS -->
         <script src="/static/js/jquery-3.6.0.min.js"></script>
         <script src="/static/js/leaflet-src.js"></script>
         <script src="/static/js/turf.min.js"></script>
@@ -27,7 +25,6 @@
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
         <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     
-      
         <style>
           #mapdiv {
             height: 100vh;
@@ -46,10 +43,8 @@
           }
         </style>
       </head>
-      
     <body>
        <div id="mapdiv" class="col-md-9"></div>
-       
        <div id="side-bar" class="col-md-3"><h2>My Map</h2>
             <button id="l1">Skolinfo</button>
             <button id="l2">layer2</button>
@@ -65,18 +60,14 @@
             <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button> <!-- ändrat från Lund till Ljungby -->
             <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
             <button id="btnTask7" class="btn btn-info btn-block">Zoom to task 7</button>
-
        </div>
-       
        <div id="sidebar">
         <h1>Skolinfo</h1>
         <div id="school-info">
           <p>Klicka på en skola för att se information här.</p>
         </div>
       </div>
-      
        </div>
-        
        <script>
         var mymap;
         var lyrOSM;
@@ -298,6 +289,7 @@
                 }
             });
             
+            // T2 PolylineMeasure för skolor
             document.getElementById("l3").addEventListener('click', function() {
                 loadSchoolLines();
              });
