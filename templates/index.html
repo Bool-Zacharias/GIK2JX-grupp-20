@@ -49,6 +49,7 @@
             <button id="l1">Skolinfo</button>
             <button id="l2">layer2</button>
             <button id="l3">Task 2 Distans Skolor i Stockholm</button>
+            <button id="Task3">Task 3</button>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
             <button id='btnHovet' class="btn btn-primary btn-block">ZoomToHovet</button>
@@ -197,34 +198,16 @@
                     <img src='/static/img/björkebyskolan.jpg' width='200px'>
                 `);
             });
-        
-            // === Task 3: Supermarkets + Buffertar ===
-            var supermarketLayer = L.geoJSON(supermarket, {
-                onEachFeature: function(feature, layer) {
-                    if (feature.properties && feature.properties.name) {
-                        layer.bindPopup(`<b>${feature.properties.name}</b>`);
-                    }
-                },
-                pointToLayer: function(feature, latlng) {
-                    return L.circleMarker(latlng, {
-                        radius: 8,
-                        fillColor: "#2E86AB",
-                        color: "#000",
-                        weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                    });
-                }
-            }).addTo(mymap);
-        
-            const supermarketBuffer = turf.buffer(supermarket, 1, {units: 'kilometers'});
-            var bufferLayer = L.geoJSON(supermarketBuffer, {
-                style: {
-                    color: "orange",
-                    fillOpacity: 0.2,
-                    dashArray: "5,5"
-                }
-            }).addTo(mymap);
+
+            // T2 PolylineMeasure för skolor
+            document.getElementById("l3").addEventListener('click', function() {
+                loadSchoolLines();
+            });
+
+            // T3 Supermarkets with buffer for 1km
+            document.getElementById("Task3").addEventListener('click',function(){
+                createSupermarketBuffers();
+            });
         
             // === Task 4: Hovet Bildoverlay ===
             var imageBounds = [[59.29524337663716, 18.08083650768264], [59.294591453048064, 18.08286425761146]];
@@ -295,11 +278,6 @@
                     countrieslayer.addTo(mymap);
                 }
             });
-            
-            // T2 PolylineMeasure för skolor
-            document.getElementById("l3").addEventListener('click', function() {
-                loadSchoolLines();
-             });
 
             $("#btnFalun").click(() => { mymap.flyTo([60.605866810126194, 15.628008842468262], 17); });
             $("#btnStockholm").click(() => { mymap.flyTo([59.32502619101459, 18.07071832838824], 11); });
@@ -318,6 +296,7 @@
             }).addTo(mymap);
         });
         </script>
+        <script src="/static/js/task3.js"></script>
         <script src="/static/js/task2.js"></script>
        <script src="/static/js/task7.js"></script>
     </body>
