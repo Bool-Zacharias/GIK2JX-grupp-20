@@ -20,7 +20,3 @@ function task7Kluster() {
           });
       });
 }
-// Koppla till knappen
-$("#btnKluster").click(() => {
-  task7Kluster();
-});
