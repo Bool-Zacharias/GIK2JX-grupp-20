@@ -46,14 +46,14 @@
     <body>
        <div id="mapdiv" class="col-md-9"></div>
        <div id="side-bar" class="col-md-3"><h2>My Map</h2>
-            <button id="l1">Skolinfo</button>
-            <button id="l2">layer2</button>
+            <button id="l1">Skolinfo måste fixa denna</button>
             <button id="l3">Task 2 Distans Skolor i Stockholm</button>
             <button id="Task3">Task 3</button>
             <button id="Task1">Task 1</button>
+            <button id="Task5">Task 5</button>
+            <button id="Task4">Task 4</button>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
-            <button id='btnHovet' class="btn btn-primary btn-block">ZoomToHovet</button>
             <hr>
             
             <h3>Väder</h3>
@@ -216,24 +216,18 @@
                 createSupermarketBuffers();
             });
         
-            // === Task 4: Hovet Bildoverlay ===
-            var imageBounds = [[59.29524337663716, 18.08083650768264], [59.294591453048064, 18.08286425761146]];
-            var imageOverlay = L.imageOverlay('/static/img/djurgådenhockey.jpg', imageBounds).addTo(mymap);
-        
-            // === Task 5: Kluster för tankstationer ===
-            var fuelCluster = L.markerClusterGroup();
-            var fuelLayer = L.geoJSON(fuel, {
-                onEachFeature: function(feature, layer) {
-                    if (feature.properties && feature.properties.name) {
-                        layer.bindPopup(`<b>${feature.properties.name}</b>`);
-                    }
-                },
-                pointToLayer: function(feature, latlng) {
-                    return L.marker(latlng);
-                }
+            // T4 Hovet Bildoverlay 
+            document.getElementById("Task4").addEventListener('click', function () {
+                clearMap();
+                imageOverlays();
+                mymap.flyTo([59.29509272313594, 18.08190939127913], 17);
             });
-            fuelCluster.addLayer(fuelLayer);
-            mymap.addLayer(fuelCluster);
+
+            // T5 Fuel Clusters
+            document.getElementById("Task5").addEventListener('click', function(){
+                clearMap();
+                fuelCluster();
+            });
         
             // === Task 6: Väder från SMHI ===
             const weatherStations = {
@@ -277,32 +271,14 @@
             $("#btnFalunWeather").click(() => { goToWeather("Falun"); });
             $("#btnVasterasWeather").click(() => { goToWeather("Västerås"); });
         
-            // Layer toggles
-            document.getElementById("l2").addEventListener("click", () => {
-                if (mymap.hasLayer(countrieslayer)) {
-                    mymap.removeLayer(countrieslayer);
-                } else {
-                    countrieslayer.addTo(mymap);
-                }
-            });
 
             $("#btnFalun").click(() => { mymap.flyTo([60.605866810126194, 15.628008842468262], 17); });
             $("#btnStockholm").click(() => { mymap.flyTo([59.32502619101459, 18.07071832838824], 11); });
-            $("#btnHovet").click(() => { mymap.flyTo([59.29509272313594, 18.08190939127913], 17); });
         
-            sample1.addTo(mymap);
-            var s2 = sample1.toGeoJSON();
-            var samplegeo = turf.buffer(s2, 0.5, {units: 'kilometers'});
-        
-            L.geoJSON(samplegeo, {
-                style: {
-                    color: 'yellow',
-                    dashArray: '5,5',
-                    fillOpacity: 0.1
-                }
-            }).addTo(mymap);
         });
         </script>
+        <script src="/static/js/task4.js"></script>
+        <script src="/static/js/task5.js"></script>
         <script src="/static/js/task1.js"></script>
         <script src="/static/js/task3.js"></script>
         <script src="/static/js/task2.js"></script>
