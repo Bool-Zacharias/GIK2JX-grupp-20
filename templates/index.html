@@ -50,10 +50,12 @@
             <button id="l2">layer2</button>
             <button id="l3">Task 2 Distans Skolor i Stockholm</button>
             <button id="Task3">Task 3</button>
+            <button id="Task1">Task 1</button>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
             <button id='btnHovet' class="btn btn-primary btn-block">ZoomToHovet</button>
             <hr>
+            
             <h3>Väder</h3>
             <button id="btnGbgWeather" class="btn btn-info btn-block">Gå till väder Göteborg</button>
             <button id="btnSthlmWeather" class="btn btn-info btn-block">Gå till väder Stockholm Arlanda</button> <!-- ändrat från Malmö till Kiruna -->
@@ -62,6 +64,7 @@
             <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
             <button id="btnKluster" class="btn btn-info btn-block">Zoom to task 7</button>
        </div>
+
        <div id="sidebar">
         <h1>Skolinfo</h1>
         <div id="school-info">
@@ -69,24 +72,24 @@
         </div>
       </div>
        </div>
+
        <script>
         var mymap;
         var lyrOSM;
-        var mrkCurrentLocation;
         var ctlZoomslider;
         var ctlSlidebar;
         var countrieslayer;
         var swedishlayer = L.geoJson(swedish_counties);
-        var sample = L.geoJson(sample);
-        var sample1 = L.geoJson(sample1);
         var skepparholmen = L.geoJson(skepparholmen);
+        
         function clearMap() {
             mymap.eachLayer(function (layer) {
                 if (layer !== lyrOSM) {
                 mymap.removeLayer(layer);
                 }
             });
-            }
+        }
+
         $(document).ready(function() {
             
             mymap = L.map('mapdiv', {center: [60.48868922712431, 15.421371459960938], zoom: 13});
@@ -103,10 +106,6 @@
                 [60.484316080102275, 15.441777259162706],
                 [60.486972387134756, 15.438435413671698]
             ];
-            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
-        
-            L.control.polylineMeasure().addTo(mymap);
-            skepparholmen.addTo(mymap);
         
             var blackIcon = L.icon({
                 iconUrl: '/static/img/map-marker.svg', // FIXAT
@@ -199,13 +198,21 @@
                 `);
             });
 
+            // T1 Point, Line och Polygon med Leflet
+            document.getElementById("Task1").addEventListener("click", function(){
+                clearMap();
+                createPointLinePolygon();
+            });
+
             // T2 PolylineMeasure för skolor
             document.getElementById("l3").addEventListener('click', function() {
+                clearMap();
                 loadSchoolLines();
             });
 
             // T3 Supermarkets with buffer for 1km
             document.getElementById("Task3").addEventListener('click',function(){
+                clearMap();
                 createSupermarketBuffers();
             });
         
@@ -296,6 +303,7 @@
             }).addTo(mymap);
         });
         </script>
+        <script src="/static/js/task1.js"></script>
         <script src="/static/js/task3.js"></script>
         <script src="/static/js/task2.js"></script>
        <script src="/static/js/task7.js"></script>

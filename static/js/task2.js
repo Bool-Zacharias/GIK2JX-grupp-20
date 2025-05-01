@@ -29,9 +29,3 @@
   }
   
   
-  document.getElementById("l3").addEventListener('click', function() {
-    loadSchoolLines();
-    clearMap();
-  });
-  
-  
