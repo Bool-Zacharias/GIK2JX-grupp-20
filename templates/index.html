@@ -145,60 +145,40 @@
                 clearMap();
                 fuelCluster();
             });
-        
-            // === Task 6: Väder från SMHI ===
-            const weatherStations = {
-                "Göteborg": {id: 98230, coords: [57.7089, 11.9746]},
-                "Falun": {id: 97100, coords: [60.6072, 15.6310]},
-                "Uppsala": {id: 97510, coords: [59.8586, 17.6389]},
-                "Stockholm": {id: 97400, coords: [59.6269, 17.9545]},
-                "Västerås": {id: 97400, coords: [59.6099, 16.5448]}
-            };
-        
-            let weatherMarker;
-            function goToWeather(cityName) {
-                const station = weatherStations[cityName];
-                const smhiUrl = `https://opendata-download-metobs.smhi.se/api/version/latest/parameter/1/station/${station.id}/period/latest-hour/data.json`;
-        
-                fetch(smhiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        const temp = data.value[0].value;
-                        const time = new Date(data.value[0].date).toLocaleString();
-        
-                        if (weatherMarker) {
-                            mymap.removeLayer(weatherMarker);
-                        }
-        
-                        weatherMarker = L.marker(station.coords)
-                            .addTo(mymap)
-                            .bindPopup(`<h4>${cityName}</h4><p><strong>${temp}°C</strong></p><p><small>${time}</small></p>`)
-                            .openPopup();
-        
-                        mymap.flyTo(station.coords, 12);
-                    })
-                    .catch(error => {
-                        console.error("Fel vid hämtning av väderdata:", error);
-                    });
-            }
-        
-            $("#btnGbgWeather").click(() => { goToWeather("Göteborg"); });
-            $("#btnSthlmWeather").click(() => { goToWeather("Stockholm"); });
-            $("#btnUppsalaWeather").click(() => { goToWeather("Uppsala"); });
-            $("#btnFalunWeather").click(() => { goToWeather("Falun"); });
-            $("#btnVasterasWeather").click(() => { goToWeather("Västerås"); });
-        
 
-            $("#btnFalun").click(() => { mymap.flyTo([60.605866810126194, 15.628008842468262], 17); });
-            $("#btnStockholm").click(() => { mymap.flyTo([59.32502619101459, 18.07071832838824], 11); });
-        
+            // T6 Weather Destinations for 5 citys. SMHI api
+            document.getElementById("btnGbgWeather").addEventListener('click', function() {
+                clearMap();
+                weatherDestinations();
+            });
+
+            document.getElementById("btnSthlmWeather").addEventListener('click', function() {
+                clearMap();
+                weatherDestinations();
+            });
+
+            document.getElementById("btnUppsalaWeather").addEventListener('click', function() {
+                clearMap();
+                weatherDestinations();
+            });
+
+            document.getElementById("btnFalunWeather").addEventListener('click', function() {
+                clearMap();
+                weatherDestinations();
+            });
+
+            document.getElementById("btnVasterasWeather").addEventListener('click', function() {
+                clearMap();
+                weatherDestinations();
+            });
         });
         </script>
+        <script src="/static/js/task1.js"></script>
+        <script src="/static/js/task2.js"></script>
+        <script src="/static/js/task3.js"></script>
         <script src="/static/js/task4.js"></script>
         <script src="/static/js/task5.js"></script>
-        <script src="/static/js/task1.js"></script>
-        <script src="/static/js/task3.js"></script>
-        <script src="/static/js/task2.js"></script>
+        <script src="/static/js/task6.js"></script>
        <script src="/static/js/task7.js"></script>
     </body>
 </html>
