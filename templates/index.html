@@ -58,9 +58,9 @@
             
             <h3>Väder</h3>
             <button id="btnGbgWeather" class="btn btn-info btn-block">Gå till väder Göteborg</button>
-            <button id="btnSthlmWeather" class="btn btn-info btn-block">Gå till väder Stockholm Arlanda</button> <!-- ändrat från Malmö till Kiruna -->
+            <button id="btnSthlmWeather" class="btn btn-info btn-block">Gå till väder Stockholm Arlanda</button>
             <button id="btnUppsalaWeather" class="btn btn-info btn-block">Gå till väder Uppsala</button>
-            <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button> <!-- ändrat från Lund till Ljungby -->
+            <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button>
             <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
             <button id="btnKluster" class="btn btn-info btn-block">Zoom to task 7</button>
        </div>
@@ -82,6 +82,7 @@
         var swedishlayer = L.geoJson(swedish_counties);
         var skepparholmen = L.geoJson(skepparholmen);
         
+        // Ränsa kartan på allt
         function clearMap() {
             mymap.eachLayer(function (layer) {
                 if (layer !== lyrOSM) {
@@ -114,90 +115,6 @@
                 popupAnchor: [0, -30]
             });
         
-            // Markers
-            var popb = L.marker([60.48868922712431, 15.431371459960938], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup('Intro to Leaflet');
-        
-            var popf = L.marker([60.605898734439805, 15.628023594617845], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("<h3>Falun Museum</h3><img src='/static/img/museum.jpg' width='150px'>");
-        
-            var pops = L.marker([59.32502619101459, 18.07071832838824], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("Point to Stockholm");
-        
-            var popNeptuniskolan = L.marker([59.384911471411755, 17.83675616886731], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("<h3>Neptuniskolan</h3><img src='/static/img/neptuniskolan.jpg' width='150px'>");
-        
-            var popStockholmUniversitet = L.marker([59.366121405055026, 18.06012909690233], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("<h3>Stockholms Universitet</h3><img src='/static/img/universitet.jpg' width='150px'>");
-        
-            var popForsvarsHogskolan = L.marker([59.349072938891425, 18.06914564190444], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("<h3>Försvarshögskolan</h3><img src='/static/img/Försvarshögskolan.png' width='150px'>");
-        
-            var popKarolinskaUniversitetet = L.marker([59.21920478627072, 17.93479121886577], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("<h3>Karolinska Institutet</h3><img src='/static/img/Karolinska universitetet.jpg' width='150px'>");
-        
-            var popBjörkebyskolan = L.marker([59.398737842997406, 17.849838410067036], {icon: blackIcon})
-                .addTo(mymap)
-                .bindPopup("<h3>Björkebyskolan</h3><img src='/static/img/björkebyskolan.jpg' width='150px'>");
-        
-            // Sidebar info när man klickar på skolorna
-            popNeptuniskolan.on('click', function() {
-                ctlSlidebar.show();
-                $("#school-info").html(`
-                    <h3>Neptuniskolan</h3>
-                    <p>Antal elever: 350</p>
-                    <p>Adress: Neptunigatan 12, Järfälla</p>
-                    <img src='/static/img/neptuniskolan.jpg' width='200px'>
-                `);
-            });
-        
-            popStockholmUniversitet.on('click', function() {
-                ctlSlidebar.show();
-                $("#school-info").html(`
-                    <h3>Stockholms Universitet</h3>
-                    <p>Antal studenter: 30 000+</p>
-                    <p>Adress: Universitetsvägen 10A, Stockholm</p>
-                    <img src='/static/img/universitet.jpg' width='200px'>
-                `);
-            });
-        
-            popForsvarsHogskolan.on('click', function() {
-                ctlSlidebar.show();
-                $("#school-info").html(`
-                    <h3>Försvarshögskolan</h3>
-                    <p>Fokus: Försvar, säkerhet & krisberedskap</p>
-                    <p>Adress: Drottning Kristinas väg 37, Stockholm</p>
-                    <img src='/static/img/Försvarshögskolan.png' width='200px'>
-                `);
-            });
-        
-            popKarolinskaUniversitetet.on('click', function() {
-                ctlSlidebar.show();
-                $("#school-info").html(`
-                    <h3>Karolinska Institutet</h3>
-                    <p>Antal studenter: 6 000+</p>
-                    <p>Adress: Nobels väg 6, Solna</p>
-                    <img src='/static/img/Karolinska universitetet.jpg' width='200px'>
-                `);
-            });
-        
-            popBjörkebyskolan.on('click', function() {
-                ctlSlidebar.show();
-                $("#school-info").html(`
-                    <h3>Björkebyskolan</h3>
-                    <p>Antal elever: 450</p>
-                    <p>Adress: Björkebyvägen 10, Järfälla</p>
-                    <img src='/static/img/björkebyskolan.jpg' width='200px'>
-                `);
-            });
-
             // T1 Point, Line och Polygon med Leflet
             document.getElementById("Task1").addEventListener("click", function(){
                 clearMap();
@@ -207,7 +124,7 @@
             // T2 PolylineMeasure för skolor
             document.getElementById("l3").addEventListener('click', function() {
                 clearMap();
-                loadSchoolLines();
+                loadSchools();
             });
 
             // T3 Supermarkets with buffer for 1km
