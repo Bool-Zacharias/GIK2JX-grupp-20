@@ -2,7 +2,7 @@ import pandas as pd
 from flask import Flask, jsonify
 from sklearn.cluster import KMeans
 from flask import Flask, render_template
-
+import numpy as np
 
 app = Flask(__name__)
 
@@ -18,14 +18,29 @@ def api_clusters():
     # Byt namn på kolumner
     df = df.rename(columns={"ycoord": "lat", "xcoord": "lon"})
 
-    # Skapa KMeans-kluster
+    # Antal kluster sparas i lista 
+    sse = [] # sum of squarred errors
     coords = df[["lat", "lon"]]
-    kMeans = KMeans(n_clusters=3, random_state=42).fit(coords)
-    df["cluster"] = kMeans.labels_
+
+    # Skapa KMeans-kluster (Elbow metoden, kMeans labb 1 AI kursen)
+    for k in range(2,7):
+        kMeans = KMeans(n_clusters=k, random_state=42)
+        kMeans.fit(coords)
+        sse.append(kMeans.inertia_)
+    
+    sse_diff = np.diff(sse)
+    optimal_k = np.argmin(sse_diff) + 2 # Börjar på 0 därför + 2
+
+    kMeans = KMeans(n_clusters=optimal_k, random_state=42)
+    df["cluster"] = kMeans.fit_predict(coords)
 
     # Skicka tillbaka JSON-objekt
-    return jsonify(df.to_dict(orient="records"))
+    return jsonify({
+        'optimal_k': int(optimal_k),
+        'clusters': df.to_dict(orient="records")
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
 
+# df["cluster"] = kMeans.labels_
