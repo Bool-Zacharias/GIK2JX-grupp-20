@@ -114,7 +114,6 @@
         var ctlSlidebar;
         var countrieslayer;
         var swedishlayer = L.geoJson(swedish_counties);
-        var skepparholmen = L.geoJson(skepparholmen);
         
         // Ränsa kartan på allt
         function clearMap() {
@@ -213,6 +212,7 @@
             // T7 Kluster för skolor med olika färger
             document.getElementById("btnKluster").addEventListener('click', function(){
                 task7Kluster();
+                mymap.flyTo([59.29509272313594, 18.08190939127913], 10);
             });
 
             // Zoom function for Stockholm
