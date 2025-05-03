@@ -45,24 +45,28 @@
       </head>
     <body>
        <div id="mapdiv" class="col-md-9"></div>
-       <div id="side-bar" class="col-md-3"><h2>My Map</h2>
-            <button id="l1">Skolinfo måste fixa denna</button>
-            <button id="l3">Task 2 Distans Skolor i Stockholm</button>
-            <button id="Task3">Task 3</button>
-            <button id="Task1">Task 1</button>
-            <button id="Task5">Task 5</button>
-            <button id="Task4">Task 4</button>
+       <div id="side-bar" class="col-md-3"><h1>My Map</h1>
+            
+            <h2>Zoom Functions</h2>
             <button id='btnFalun' class='btn btn-primary btn-block'>ZoomToFalun</button>
             <button id='btnStockholm' class='btn btn-primary btn-block'>ZoomToStockholm</button>
             <hr>
             
-            <h3>Väder</h3>
+            <button id="Task1">Task 1</button>
+            <button id="l3">Task 2</button>
+            <button id="Task3">Task 3</button>
+            <button id="Task4">Task 4</button>
+            <button id="Task5">Task 5</button>
+            <button id="btnKluster">Task 7</button>
+            <hr>
+            
+            <h3>Task 6 Väder</h3>
             <button id="btnGbgWeather" class="btn btn-info btn-block">Gå till väder Göteborg</button>
             <button id="btnSthlmWeather" class="btn btn-info btn-block">Gå till väder Stockholm Arlanda</button>
             <button id="btnUppsalaWeather" class="btn btn-info btn-block">Gå till väder Uppsala</button>
             <button id="btnFalunWeather" class="btn btn-info btn-block">Gå till väder Falun</button>
             <button id="btnVasterasWeather" class="btn btn-info btn-block">Gå till väder Västerås</button>
-            <button id="btnKluster" class="btn btn-info btn-block">Zoom to task 7</button>
+            
        </div>
 
        <div id="sidebar">
@@ -119,18 +123,21 @@
             document.getElementById("Task1").addEventListener("click", function(){
                 clearMap();
                 createPointLinePolygon();
+                mymap.flyTo([59.33296041947983, 18.07581915579391], 15);
             });
 
             // T2 PolylineMeasure för skolor
             document.getElementById("l3").addEventListener('click', function() {
                 clearMap();
                 loadSchools();
+                mymap.flyTo([59.33296041947983, 18.07581915579391], 10);
             });
 
             // T3 Supermarkets with buffer for 1km
             document.getElementById("Task3").addEventListener('click',function(){
                 clearMap();
                 createSupermarketBuffers();
+                mymap.flyTo([59.86161645180326, 17.636375532000955], 8);
             });
         
             // T4 Hovet Bildoverlay 
@@ -144,6 +151,7 @@
             document.getElementById("Task5").addEventListener('click', function(){
                 clearMap();
                 fuelCluster();
+                mymap.flyTo([59.29509272313594, 18.08190939127913],10)
             });
 
             // T6 Weather Destinations for 5 citys. SMHI api
