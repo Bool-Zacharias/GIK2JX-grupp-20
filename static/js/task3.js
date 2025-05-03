@@ -40,14 +40,19 @@ function createSupermarketBuffers() {
 
                 const bufferColor = overlapWithOtherBuffers ? "green" : "red"; // Grönt om överlappar, rött annars
 
-                // Lägg till bufferten på kartan med rätt färg
                 L.geoJSON(buffer, {
                     style: {
                         color: bufferColor,
                         fillOpacity: 0.2,
                         weight: 2
+                    },
+                    onEachFeature: function (feature, layer) {
+                        if (currentFeature.properties && currentFeature.properties.name) {
+                            layer.bindPopup(`<b>${currentFeature.properties.name}</b>`);
+                        }
                     }
                 }).addTo(mymap);
+                
             });
         });
 }
