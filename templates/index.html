@@ -1,8 +1,12 @@
 <!DOCTYPE html>
+<!-- Patrik Peterson & Zacharias Andersson 
+ Grupp 20
+ GIK2JX
+ Assignment 1 -->
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>Webmapp 201</title>
+        <title>Grupp20</title>
       
         <link rel="stylesheet" href="/static/css/bootstrap.css">
         <link rel="stylesheet" href="/static/css/leaflet.css">
@@ -25,6 +29,7 @@
         <script src="https://ppete2.github.io/Leaflet.PolylineMeasure/Leaflet.PolylineMeasure.js"></script>
         <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     
+        <!-- Custom Styling with bootstrap -->
         <style>
           #mapdiv {
             height: 100vh;
@@ -33,12 +38,10 @@
           #side-bar {
             position: absolute;
             z-index: 1000;
-            background:rgb(114,134,134);
+            
             padding: 10px;
             right: 0;
             top: 0;
-            margin: 10px;
-            border-radius: 10px;
             min-height: 200px;
           }
           .custom-heading {
@@ -50,42 +53,53 @@
             background:rgb(114,134,134);
         }
         .custom-btn-color{
-            color:rgb(209,213,213)
+            background-color:rgb(209,213,213)
         }
         .custom-text-btn-color{
             color:rgb(61,95,94)
+        }  
+        .custom-btn-border{
+            border: 2px solid white;
+        } 
+        .custom-heading-2{
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+            color: rgb(86,114, 113);
         }
-            
+        
+        #sidebar{
+            background:rgb(114,134,134);
+        }
         </style>
       </head>
     <body>
-       <div id="mapdiv" class="col-md-9 custom-bg-color" ></div>
+       <div id="mapdiv" class="col-md-9" ></div>
        <div id="side-bar" class="col-md-3 custom-heading mb-1"><h1>Inlämningsuppgift 1</h1>
             
             <h2 class="">Zoom Functions</h2>
-            <button id='btnFalun' class='btn btn-primary btn-block'>Zoom To Falun</button>
-            <button id='btnStockholm' class='btn btn-primary btn-block'>Zoom To Stockholm</button>
+            <button id='btnFalun' class='btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border'>Zoom To Falun</button>
+            <button id='btnStockholm' class='btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border'>Zoom To Stockholm</button>
             <hr>
             
-            <button id="Task1" class="mb-1">Task 1</button>
-            <button id="l3" class="mb-1">Task 2</button>
-            <button id="Task3" class="mb-1">Task 3</button>
-            <button id="Task4" class="mb-1">Task 4</button>
-            <button id="Task5" class="mb-1">Task 5</button>
-            <button id="btnKluster" class="mb-1">Task 7</button>
+            <button id="Task1" class=" btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Task 1</button>
+            <button id="l3" class=" btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Task 2</button>
+            <button id="Task3" class="btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Task 3</button>
+            <button id="Task4" class="btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Task 4</button>
+            <button id="Task5" class="btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Task 5</button>
+            <button id="btnKluster" class="btn mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Task 7</button>
             <hr>
             
             <div class="custom-heading mb-1">
             <h3 class="">Task 6 Väder</h3>
-            <button id="btnGbgWeather" class="btn btn-info btn-block mb-1">Gå till väder Göteborg</button>
-            <button id="btnSthlmWeather" class="btn btn-info btn-block mb-1">Gå till väder Stockholm Arlanda</button>
-            <button id="btnUppsalaWeather" class="btn btn-info btn-block mb-1">Gå till väder Uppsala</button>
-            <button id="btnFalunWeather" class="btn btn-info btn-block mb-1">Gå till väder Falun</button>
-            <button id="btnVasterasWeather" class="btn btn-info btn-block mb-1">Gå till väder Västerås</button>
+            <button id="btnGbgWeather" class="btn btn-block mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Gå till väder Göteborg</button>
+            <button id="btnSthlmWeather" class="btn btn-block mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Gå till väder Stockholm Arlanda</button>
+            <button id="btnUppsalaWeather" class="btn btn-block mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Gå till väder Uppsala</button>
+            <button id="btnFalunWeather" class="btn btn-block mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Gå till väder Falun</button>
+            <button id="btnVasterasWeather" class="btn btn-block mb-1 custom-btn-color custom-text-btn-color custom-btn-border">Gå till väder Västerås</button>
             </div>
        </div>
 
-       <div id="sidebar" class="custom-heading ">
+       <div id="sidebar" class="custom-heading">
         <h1>Skolinfo</h1>
         <div id="school-info">
           <p>Klicka på en skola för att se information här.</p>
